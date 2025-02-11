@@ -57,9 +57,18 @@ def add_tracker(parent, callback):
 
 def tracker_created(parent, get_name):
     name = get_name()
-    tracker = 
-    
-    
+    tracker = 0
+
+class Frontend(tk.Tk):
+    def __init__(self, message_pipe, screenName = None, baseName = None, className = "Tk", useTk = True, sync = False, use = None):
+        super().__init__(screenName, baseName, className, useTk, sync, use)
+        self.message_pipe = message_pipe
+
+    def send_message(self, message_id, **kwargs):
+        self.message_pipe(message_id, kwargs)
+
+    def create_tracker(self, tracker_name):
+        self.send_message("create-tracker", name=tracker_name)
 
 
 
@@ -67,7 +76,7 @@ def tracker_created(parent, get_name):
 def initialize_frontend(configuration=None):
     """Initializes the frontend application."""
     # Create application context
-    window = tk.Tk()
+    window = Frontend()
     window.title("Time Tracker")
     window.geometry('350x200')
 
